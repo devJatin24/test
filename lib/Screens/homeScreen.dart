@@ -16,10 +16,12 @@ import 'package:yc_test/database/dbManager.dart';
 import 'package:yc_test/model/Movie.dart';
 
 import 'addMovieData.dart';
+import 'animation/liveCodeing.dart';
 import 'movieDetail.dart';
 
 class HomeScreen extends StatefulWidget {
-  bool userLogin =false;
+  bool userLogin = false;
+
   HomeScreen({this.userLogin = false});
 
   @override
@@ -60,19 +62,25 @@ class _HomeScreenState extends State<HomeScreen> {
           mSize: 18,
         ),
         actions: [
-      widget.userLogin ?  IconButton(
-              onPressed: () {
-                MethodUtils.showAlertDialog(
-                    context,
-                    "Logout",
-                    "Are you Sure you "
-                        "want to Logout?", callback: () {
-                  FirebaseAuth.instance.signOut();
-                  openScreenAsPlatformWiseRoute(context, LoginScreen(),
-                      isExit: true);
-                });
-              },
-              icon: Icon(Icons.logout)) : SizedBox.shrink()
+          widget.userLogin
+              ? IconButton(
+                  onPressed: () {
+                    MethodUtils.showAlertDialog(
+                        context,
+                        "Logout",
+                        "Are you Sure you "
+                            "want to Logout?", callback: () {
+                      FirebaseAuth.instance.signOut();
+                      openScreenAsPlatformWiseRoute(context, LoginScreen(),
+                          isExit: true);
+                    });
+                  },
+                  icon: Icon(Icons.logout))
+              : SizedBox.shrink(),
+          IconButton(
+            icon: Icon(Icons.arrow_forward),
+            onPressed: () => openScreenAsLeftToRight(context, LiveTest()),
+          )
         ],
       ),
       body: BlocConsumer<MoviesCubit, MoviesState>(
@@ -99,7 +107,8 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: materialPrimaryColor,
         foregroundColor: Colors.white,
         onPressed: () {
-          openScreenAsBottomToTop(context, AddMovie()).then((value) => cubit.getMovies());
+          openScreenAsBottomToTop(context, AddMovie())
+              .then((value) => cubit.getMovies());
         },
         child: Icon(Icons.add),
       ),
@@ -166,39 +175,41 @@ class _HomeScreenState extends State<HomeScreen> {
                     maxLine: 2,
                   ),
                   SizedBox(height: 8),
-                  widget.userLogin ?  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      ElevatedButton(
-                        style: raisedButtonStyle(Colors.green),
-                        child: DxTextWhite(
-                          "Edit",
-                          mBold: true,
-                          mSize: 18,
-                        ),
-                        onPressed: () {
-                          openScreenAsBottomToTop(
-                              c,
-                              AddMovie(
-                                title: "Update",
-                                model: model,
-                              )).then((value) => cubit.getMovies());
-                        },
-                      ),
-                      ElevatedButton(
-                        style: raisedButtonStyle(Colors.red),
-                        child: DxTextWhite(
-                          "Delete",
-                          mBold: true,
-                          mSize: 18,
-                        ),
-                        onPressed: () {
-                          BlocProvider.of<MoviesCubit>(c)
-                              .deleteMovie(model, c);
-                        },
-                      ),
-                    ],
-                  ) : SizedBox.shrink()
+                  widget.userLogin
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            ElevatedButton(
+                              style: raisedButtonStyle(Colors.green),
+                              child: DxTextWhite(
+                                "Edit",
+                                mBold: true,
+                                mSize: 18,
+                              ),
+                              onPressed: () {
+                                openScreenAsBottomToTop(
+                                    c,
+                                    AddMovie(
+                                      title: "Update",
+                                      model: model,
+                                    )).then((value) => cubit.getMovies());
+                              },
+                            ),
+                            ElevatedButton(
+                              style: raisedButtonStyle(Colors.red),
+                              child: DxTextWhite(
+                                "Delete",
+                                mBold: true,
+                                mSize: 18,
+                              ),
+                              onPressed: () {
+                                BlocProvider.of<MoviesCubit>(c)
+                                    .deleteMovie(model, c);
+                              },
+                            ),
+                          ],
+                        )
+                      : SizedBox.shrink()
                 ],
               ),
             ),

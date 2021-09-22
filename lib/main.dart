@@ -23,7 +23,8 @@ class MyApp extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.light,
-        statusBarBrightness: Platform.isAndroid ? Brightness.dark : Brightness.light,
+        statusBarBrightness:
+            Platform.isAndroid ? Brightness.dark : Brightness.light,
         systemNavigationBarColor: Colors.white,
         systemNavigationBarDividerColor: Colors.white,
         systemNavigationBarIconBrightness: Brightness.light));
@@ -37,15 +38,13 @@ class MyApp extends StatelessWidget {
         // home: BottomNavigationScreen(),
       ),
     );
-
   }
 }
 
 class BlocManager {
   static List<BlocProviderSingleChildWidget> get blocProviders => [
-    BlocProvider(create: (context) => UpdateDataBaseCubit()),
-    BlocProvider(create: (context) => MoviesCubit()),
-    BlocProvider(create: (context) => LoginCubit()),
-
-  ];
+        BlocProvider(create: (context) => UpdateDataBaseCubit()),
+        BlocProvider(create: (context) => MoviesCubit()),
+        BlocProvider(create: (context) => LoginCubit()),
+      ];
 }
